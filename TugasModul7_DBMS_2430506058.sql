@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 21, 2025 at 03:56 PM
+-- Generation Time: May 28, 2025 at 06:55 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -18,125 +18,131 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `db_penjualan`
+-- Database: `db_kampus`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pelanggan`
+-- Table structure for table `dosen`
 --
 
-CREATE TABLE `pelanggan` (
-  `id_pelanggan` int(11) NOT NULL,
-  `nama_pelanggan` varchar(50) DEFAULT NULL,
-  `alamat` varchar(100) DEFAULT NULL
+CREATE TABLE `dosen` (
+  `nip` char(10) NOT NULL,
+  `nama` varchar(50) DEFAULT NULL,
+  `bidang` varchar(30) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `pelanggan`
+-- Dumping data for table `dosen`
 --
 
-INSERT INTO `pelanggan` (`id_pelanggan`, `nama_pelanggan`, `alamat`) VALUES
-(1, 'Andi', 'Jl. Merdeka'),
-(2, 'Budi', 'Jl. Sudirman');
+INSERT INTO `dosen` (`nip`, `nama`, `bidang`) VALUES
+('D001', 'Andi Setyo', 'Informatika'),
+('D002', 'Budi Rahayu', 'Informatika'),
+('D003', 'Chandra Adhi', 'Informatika');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `produk`
+-- Table structure for table `mahasiswa`
 --
 
-CREATE TABLE `produk` (
-  `kode_produk` varchar(10) NOT NULL,
-  `nama_produk` varchar(50) DEFAULT NULL,
-  `harga` int(11) DEFAULT NULL
+CREATE TABLE `mahasiswa` (
+  `nim` char(10) NOT NULL,
+  `nama` varchar(50) DEFAULT NULL,
+  `jurusan` varchar(30) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `produk`
+-- Dumping data for table `mahasiswa`
 --
 
-INSERT INTO `produk` (`kode_produk`, `nama_produk`, `harga`) VALUES
-('P001', 'Laptop', 7000000),
-('P002', 'Mouse', 150000);
+INSERT INTO `mahasiswa` (`nim`, `nama`, `jurusan`) VALUES
+('1234567890', 'Andi', 'Informatika'),
+('2420506034', 'Lulu', 'Teknologi Informasi'),
+('2430506058', 'Bila', 'Teknologi Informasi'),
+('2430506067', 'Erlyn', 'Teknologi Informasi');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `transaksi`
+-- Table structure for table `matakuliah`
 --
 
-CREATE TABLE `transaksi` (
-  `id_transaksi` int(11) NOT NULL,
-  `kode_produk` varchar(10) DEFAULT NULL,
-  `jumlah` int(11) DEFAULT NULL,
-  `total_harga` int(11) DEFAULT NULL,
-  `id_pelanggan` int(11) DEFAULT NULL
+CREATE TABLE `matakuliah` (
+  `kode_mk` char(6) NOT NULL,
+  `nama_mk` varchar(50) DEFAULT NULL,
+  `sks` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `transaksi`
+-- Dumping data for table `matakuliah`
 --
 
-INSERT INTO `transaksi` (`id_transaksi`, `kode_produk`, `jumlah`, `total_harga`, `id_pelanggan`) VALUES
-(1, 'P001', 2, 14000000, 1),
-(2, 'P002', 5, 7500000, 2);
+INSERT INTO `matakuliah` (`kode_mk`, `nama_mk`, `sks`) VALUES
+('001', 'Basis Data', 2),
+('002', 'Paradigma Sistem', 2),
+('003', 'Algoritma Pemrograman', 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tagihan`
+--
+
+CREATE TABLE `tagihan` (
+  `id_tagihan` int(11) NOT NULL,
+  `nim` char(10) DEFAULT NULL,
+  `jenis_tagihan` varchar(50) DEFAULT NULL,
+  `jumlah_tagihan` decimal(10,2) DEFAULT NULL,
+  `status` enum('Paid','Unpaid') DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tagihan`
+--
+
+INSERT INTO `tagihan` (`id_tagihan`, `nim`, `jenis_tagihan`, `jumlah_tagihan`, `status`) VALUES
+(345, '2430506058', 'Pembayaran UKT', 11000000.00, 'Paid');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `temp_tabel`
+--
+
+CREATE TABLE `temp_tabel` (
+  `id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `pelanggan`
+-- Indexes for table `dosen`
 --
-ALTER TABLE `pelanggan`
-  ADD PRIMARY KEY (`id_pelanggan`);
+ALTER TABLE `dosen`
+  ADD PRIMARY KEY (`nip`);
 
 --
--- Indexes for table `produk`
+-- Indexes for table `mahasiswa`
 --
-ALTER TABLE `produk`
-  ADD PRIMARY KEY (`kode_produk`),
-  ADD UNIQUE KEY `idx_kode_produk` (`kode_produk`),
-  ADD KEY `idx_harga` (`harga`);
+ALTER TABLE `mahasiswa`
+  ADD PRIMARY KEY (`nim`);
 
 --
--- Indexes for table `transaksi`
+-- Indexes for table `matakuliah`
 --
-ALTER TABLE `transaksi`
-  ADD PRIMARY KEY (`id_transaksi`),
-  ADD KEY `kode_produk` (`kode_produk`),
-  ADD KEY `idx_total_harga` (`total_harga`),
-  ADD KEY `fk_id_pelanggan` (`id_pelanggan`);
+ALTER TABLE `matakuliah`
+  ADD PRIMARY KEY (`kode_mk`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- Indexes for table `tagihan`
 --
-
---
--- AUTO_INCREMENT for table `pelanggan`
---
-ALTER TABLE `pelanggan`
-  MODIFY `id_pelanggan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `transaksi`
---
-ALTER TABLE `transaksi`
-  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `transaksi`
---
-ALTER TABLE `transaksi`
-  ADD CONSTRAINT `fk_id_pelanggan` FOREIGN KEY (`id_pelanggan`) REFERENCES `pelanggan` (`id_pelanggan`),
-  ADD CONSTRAINT `transaksi_ibfk_1` FOREIGN KEY (`kode_produk`) REFERENCES `produk` (`kode_produk`),
-  ADD CONSTRAINT `transaksi_ibfk_2` FOREIGN KEY (`id_pelanggan`) REFERENCES `pelanggan` (`id_pelanggan`);
+ALTER TABLE `tagihan`
+  ADD PRIMARY KEY (`id_tagihan`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
